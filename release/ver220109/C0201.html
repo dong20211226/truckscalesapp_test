@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>C0201 リスト情報登録</title>
+<style type="text/css">
+<!--
+table {
+  font-size : 12px;
+}
+input.button {
+  color : white;
+  background-color : #790018;
+  font-size : 14px;
+  width : 105px;
+}
+.form-control {
+    border: none!important;
+    padding: 0;
+    margin: 5px 0;
+    box-shadow: none!important;
+    z-index: 0;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+'use strcit';
+document.getElementById('SEL_UNIT').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+
+function doCalc() {
+   var val_size = document.getElementById("SEL_SIZE").value;
+   var val_orderqty = document.getElementById("txt_orderqty").value;
+   if (val_orderqty == "") {
+       alert("本数を記入ください。");
+       val_orderqty = 0;
+   }
+   var val_keisuu = document.getElementById("txt_keisuu").value;
+   var val_weight = val_size * val_orderqty * val_keisuu;
+   document.getElementById("txt_weight").value = val_weight + "Kg";
+}
+
+function doRegist(){
+    alert("登録しました。");
+}
+
+function doReturn(){
+    window.location.href = 'C0200.html?lineCnt=4';
+}
+
+function doLogout(){
+    if (confirm("ログアウトしますが、よろしいですか。")) {
+        var alink = document.createElement('a');
+        alink.href = "Login.html";    // サーバのファイルのURL
+        alink.click();              // クリック実行
+        return false;
+    }
+}
+
+function doOnload(){
+    doCalc();
+    var queryString = window.location.search;
+    var queryObject = new Object();
+    if(queryString){
+        queryString = queryString.substring(1);
+        var parameters = queryString.split('&');
+
+        for (var i = 0; i < parameters.length; i++) {
+            var element = parameters[i].split('=');
+
+            var paramName = decodeURIComponent(element[0]);
+            var paramValue = decodeURIComponent(element[1]);
+
+            queryObject[paramName] = paramValue;
+        }
+    }
+    var editFlag = queryObject["editFlag"];
+    
+    if ("false" == editFlag) {
+        document.getElementById("radio101").disabled = true;
+        document.getElementById("radio102").disabled = true;
+        document.getElementById("SEL_TYPE").disabled = true;
+        document.getElementById("txt_type").disabled = true;
+        document.getElementById("order_size").disabled = true;
+        document.getElementById("SEL_SIZE").disabled = true;
+        document.getElementById("txt_orderqty").disabled = true;
+        document.getElementById("calcButton").disabled = true;
+        document.getElementById("registButton").disabled = true;
+    }
+}
+-->
+</script>
+</head><body onload="javascript:doOnload();" onresize="">
+<form name="repform" method="post" action="http://xxxx-new2nd.jp.testmd.internal.xxxx.com/xxxx.md/report/tanpin_bunseki/index.php">
+<input type="hidden" name="XBUTTON" value="">
+<input type="hidden" name="keisuu" id="keisuu" value="1.35">
+<input_type="hidden" name="SELECTED_DATE" value="">
+
+<!-- エラーメッセージ格納場所 -->
+
+<div id="appErrorObjects" style="display:none"></div>
+<div id="popOnloadMessage" style="display:none">
+<textarea name="popOnloadMessageText" id="popOnloadMessageText" style="display : none;"></textarea>
+</div>
+
+
+<!-- ヘッダーリンク -->
+<!-- このソースを直したら「header_link_fix_height.html」も修正してください -->
+<table width="980" border="0" cellspacing="0" style="font-size : 16px;border-style : none;">
+  <tbody>
+    <tr>
+    <td></td>
+    
+    </tr>
+  </tbody>
+  <input id="G_KENSYO_OR_HONBAN" type="hidden" value="">
+</table>
+
+
+<table width="980" style="border-style:none;">
+  <tbody>
+  <tr>
+    <td height="52" bordercolorlight="black" bordercolordark="black">
+      
+      <!-- このソースを直したら「header_print.html」「header_non_width.html」も修正してください -->
+ <div style="width:100%; height:52px;">
+   <div style="width:100%; height:25px; border-style:solid; border-width:2px; padding:4px; background:white;">
+     <table style="width:100%; height:36px; border:solid 1px black; background:white;" cellspacing="2px">
+       <tbody>
+         <tr>
+           <td class="NO_BORDER" style="width:10%; text-align:left; word-break:keep-all; padding:0px;">
+             <table style="color : white;" cellpadding="0" cellspacing="0">
+               <tbody>
+                 <tr>
+                   <td bgcolor="#7f0019" align="center" width="98" height="39" style="font-size:14px;">TTKR</td>
+                 </tr>
+               </tbody>
+             </table>
+           </td>
+           <td class="NO_BORDER" style="width:80%; text-align:center; word-break:keep-all; font-size:18px; font-weight:bold;">C0201 リスト情報登録<span style="color: #ff0000"></span></td>
+           <td class="NO_BORDER" style="width:10%; font-weight:bold;"></td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+ </div>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+  <tbody>
+    <tr>
+    <td align="left"><a href="TopMenu.html">TopMenu</a></d>
+    <td align="right"><a href="javascript:doLogout();">YUK47001</a></d>
+    </d>
+    </tr>
+  </tbody>
+</table>
+
+
+<table width="980" style="border-style:none;">
+    <tbody><tr>
+        <td align="center">
+<!-- Edit start -->
+<fieldset class="rp_menu" align="center">
+    <table width="800px" align="center" style="border-style : none none none none; ">
+        <tbody>
+            <tr>
+                <td align="right" nowrap="" width="200px">種別[必須]：</td>
+                <td>
+                    <select id="Type" name="Type" onchange="javascript:changeCompany();" style="width:180px;">
+                        <option value="0">0:ステータス</option>
+                        <option value="1">1:役割</option>
+                        <option value="2" selected>2:所属区分</option>
+                        <option value="3">3:貨物</option>
+                        <option value="4">4:フロア</option>
+                        <option value="5">5:使用場所</option>
+                        <option value="6">6:単位</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">番号[必須]：</td>
+                <td>
+                    <input type="text" name="No" id="No" size=4 value="1" maxlength="4">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">名称[必須]：</td>
+                <td>
+                    <input type="text" name="Name" id="Name" size=30 value="企業と企業の所属関係" maxlength="50">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">予備情報：</td>
+                <td>
+                    <input type="text" name="Yobi" id="Yobi" size=30 value="" maxlength="50">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+
+<table align="center" border="0" style="border-style:none;" width="50%">
+  <tbody><tr>
+    <td align="center">
+        <input type="button" name="registButton" value="登録" onclick="javascript:doRegist();" style="width:80px;height:24px;">
+    </td>
+    <td align="center">
+        <input type="button" name="returnButton" value="戻る" onclick="javascript:doReturn();" style="width:80px;height:24px;">
+    </td>
+  </tr>
+</tbody></table>
+<!-- Edit  end  -->
+        </td>
+    </tr>
+</tbody></table>
+</input_type="hidden"></form></body></html>

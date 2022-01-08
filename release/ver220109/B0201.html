@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>B0201 ユーザー情報登録</title>
+<style type="text/css">
+<!--
+table {
+  font-size : 12px;
+}
+input.button {
+  color : white;
+  background-color : #790018;
+  font-size : 14px;
+  width : 105px;
+}
+.form-control {
+    border: none!important;
+    padding: 0;
+    margin: 5px 0;
+    box-shadow: none!important;
+    z-index: 0;
+}
+canvas {
+	position: relative;
+	border:3px solid #000;
+}
+div#img-box{
+  border:3px solid #000;
+  width:250px;
+  height:250px;
+}
+
+-->
+</style>
+<script type="text/javascript">
+<!--
+'use strcit';
+document.getElementById('SEL_CARGO').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+document.getElementById('SEL_FLOOR').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+document.getElementById('SEL_PLACE').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+document.getElementById('SEL_UNIT').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+
+function doRegist(){
+    alert("登録しました。");
+}
+
+function doReturn(){
+    window.location.href = 'B0200.html?lineCnt=4';
+}
+
+function doLogout(){
+    if (confirm("ログアウトしますが、よろしいですか。")) {
+        var alink = document.createElement('a');
+        alink.href = "Login.html";    // サーバのファイルのURL
+        alink.click();              // クリック実行
+        return false;
+    }
+}
+
+-->
+</script>
+</head><body>
+<form name="repform" method="post" action="http://xxxx-new2nd.jp.testmd.internal.xxxx.com/xxxx.md/report/tanpin_bunseki/index.php">
+<input type="hidden" name="XBUTTON" value="">
+<input type="hidden" name="keisuu" id="keisuu" value="1.35">
+<input_type="hidden" name="SELECTED_DATE" value="">
+
+<!-- エラーメッセージ格納場所 -->
+
+<div id="appErrorObjects" style="display:none"></div>
+<div id="popOnloadMessage" style="display:none">
+<textarea name="popOnloadMessageText" id="popOnloadMessageText" style="display : none;"></textarea>
+</div>
+
+
+<!-- ヘッダーリンク -->
+<!-- このソースを直したら「header_link_fix_height.html」も修正してください -->
+<table width="980" border="0" cellspacing="0" style="font-size : 16px;border-style : none;">
+  <tbody>
+    <tr>
+    <td></td>
+    
+    </tr>
+  </tbody>
+  <input id="G_KENSYO_OR_HONBAN" type="hidden" value="">
+</table>
+
+
+<table width="980" style="border-style:none;">
+  <tbody>
+  <tr>
+    <td height="52" bordercolorlight="black" bordercolordark="black">
+      
+      <!-- このソースを直したら「header_print.html」「header_non_width.html」も修正してください -->
+ <div style="width:100%; height:52px;">
+   <div style="width:100%; height:25px; border-style:solid; border-width:2px; padding:4px; background:white;">
+     <table style="width:100%; height:36px; border:solid 1px black; background:white;" cellspacing="2px">
+       <tbody>
+         <tr>
+           <td class="NO_BORDER" style="width:10%; text-align:left; word-break:keep-all; padding:0px;">
+             <table style="color : white;" cellpadding="0" cellspacing="0">
+               <tbody>
+                 <tr>
+                   <td bgcolor="#7f0019" align="center" width="98" height="39" style="font-size:14px;">TTKR</td>
+                 </tr>
+               </tbody>
+             </table>
+           </td>
+           <td class="NO_BORDER" style="width:80%; text-align:center; word-break:keep-all; font-size:18px; font-weight:bold;">B0201 ユーザー情報登録<span style="color: #ff0000"></span></td>
+           <td class="NO_BORDER" style="width:10%; font-weight:bold;"></td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+ </div>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+  <tbody>
+    <tr>
+    <td align="left"><a href="TopMenu.html">TopMenu</a></d>
+    <td align="right"><a href="javascript:doLogout();">YUK47001</a></d>
+    </d>
+    </tr>
+  </tbody>
+</table>
+
+
+<table width="980" style="border-style:none;">
+    <tbody><tr>
+        <td align="center">
+<!-- Edit start -->
+<fieldset class="rp_menu" align="center">
+    <table width="100%" align="center" style="border-style : none none none none; ">
+        <tbody>
+            <tr>
+                <td align="right" width="90px" nowrap="">元請企業[必須]：</td>
+                <td width="250px">
+                    <select id="SEL_COMPANY" name="SEL_COMPANY" onchange="javascript:changeCompany();" style="width:170px;">
+                        <option value="000">000:株式会社〇〇〇〇</option>
+                        <option value="BBB">BBB:株式会社BBBBB</option>
+                        <option value="YUK" selected>YUK:株式会社CCCCC</option>
+                        <option value="DDD">DDD:株式会社DDDDD</option>
+                    </select>
+                </td>
+                <td rowspan="11" valign="top" align="left">
+                <canvas id="canvassample" width="500" height="250"></canvas>
+<div style="padding:10px">
+  <button type="button" onclick="clearCanvas()">サインリセット</button>&nbsp;&nbsp;
+  <button type="button" onclick="chgImg()" value="1">サイン完了</button>
+</div>
+<script type="text/javascript">
+<!--
+//////////////サイン欄専用【開始】/////////////////
+//canvasの読み込み設定
+var canvas = document.getElementById("canvassample");
+var ctx = canvas.getContext("2d");
+var canvasLineWidth=10;    // 線の太さ
+var canvasAlpha=100;       // 透 明 度
+var defColor = "#555";     // 色
+
+//マウスを操作する
+var mouse = {x:0,y:0,x1:0,y1:0,color:"black"};
+var draw = false;
+
+//マウスの座標を取得する
+canvas.addEventListener("mousemove",function(e) {
+  var rect = e.target.getBoundingClientRect();  
+  ctx.lineWidth = canvasLineWidth;
+  ctx.globalAlpha = canvasAlpha/100;
+  ctx.strokeStyle = defColor;
+  
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+  
+  
+  //クリック状態なら描画をする
+  if(draw === true) {
+    ctx.beginPath();
+    ctx.moveTo(mouseX1,mouseY1);
+    ctx.lineTo(mouseX,mouseY);
+    ctx.lineCap = "round";
+    ctx.stroke();
+    mouseX1 = mouseX;
+    mouseY1 = mouseY;
+  }
+});
+  
+  //クリックしたら描画をOKの状態にする
+  canvas.addEventListener("mousedown",function(e) {
+    draw = true;
+    mouseX1 = mouseX;
+    mouseY1 = mouseY;
+    undoImage = ctx.getImageData(0, 0,canvas.width,canvas.height);
+});
+
+//クリックを離したら、描画を終了する
+canvas.addEventListener("mouseup", function(e){
+  draw = false;
+});
+
+//消去する
+function clearCanvas() {
+    document.getElementById("imgSign").src = "";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+//保存する
+function chgImg()
+{
+  var png = canvas.toDataURL("image/png");
+  document.getElementById("imgSign").src= png;
+}
+
+//スマホ用
+	var finger=new Array;
+	for(var i=0;i<10;i++){
+		finger[i]={
+			x:0,y:0,x1:0,y1:0,
+			color:"rgb("
+			+Math.floor(Math.random()*16)*15+","
+			+Math.floor(Math.random()*16)*15+","
+			+Math.floor(Math.random()*16)*15
+			+")"
+		};
+	}
+
+	//タッチした瞬間座標を取得
+	canvas.addEventListener("touchstart",function(e){
+		e.preventDefault();
+		var rect = e.target.getBoundingClientRect();
+		ctx.lineWidth = canvasLineWidth;
+		ctx.globalAlpha = canvasAlpha/100;
+		undoImage = ctx.getImageData(0, 0,canvas.width,canvas.height);
+		for(var i=0;i<finger.length;i++){
+			finger[i].x1 = e.touches[i].clientX-rect.left;
+			finger[i].y1 = e.touches[i].clientY-rect.top;
+			
+
+
+		}
+	});
+
+	//タッチして動き出したら描画
+	canvas.addEventListener("touchmove",function(e){
+		e.preventDefault();
+		var rect = e.target.getBoundingClientRect();
+		for(var i=0;i<finger.length;i++){
+			finger[i].x = e.touches[i].clientX-rect.left;
+			finger[i].y = e.touches[i].clientY-rect.top;
+			ctx.beginPath();
+			ctx.moveTo(finger[i].x1,finger[i].y1);
+			ctx.lineTo(finger[i].x,finger[i].y);
+			ctx.lineCap="round";
+			ctx.stroke();
+			finger[i].x1=finger[i].x;
+			finger[i].y1=finger[i].y;
+			
+		}
+	});
+//////////////サイン欄専用【終了】/////////////////
+-->
+</script>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">役割[必須]：</td>
+                <td>
+                    <select id="SEL_ROLE" name="SEL_ROLE" onchange="javascript:changeCompany();" style="width:100px;">
+                        <option value="0">0:ゲスト</option>
+                        <option value="1">1:ユーザ</option>
+                        <option value="9" selected>9:管理者</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">ステータス[必須]：</td>
+                <td>
+                    <select id="SEL_STATUS" name="SEL_STATUS" onchange="javascript:changeCompany();" style="width:100px;">
+                        <option value="0">0:未承認</option>
+                        <option value="1" selected>1:承認済</option>
+                        <option value="2">2:資格停止</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">ID[必須]：</td>
+                <td><input type="text" name="txt_Id" size=10 value="YUK-abdaro">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">パスワード[必須]：</td>
+                <td><input type="text" name="txt_pass" size=10 value="pass8901*_!">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">メール[必須]：</td>
+                <td><input type="text" name="txt_Mail" size=20 value="tttgggkkk@gmail.com">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">氏名[必須]：</td>
+                <td><input type="text" name="txt_name" size=15 value="鈴木　大郎" maxlength="30">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">カタカナ[必須]：</td>
+                <td><input type="text" name="txt_katakana" size=15 value="アベ　ダイロウ" maxlength="30">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">電話番号[必須]：</td>
+                <td><input type="text" name="txt_tel" size=15 value="080-8897-7658" maxlength="13">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">タブレット：</td>
+                <td><input type="text" name="txt_TabletId" size=6 value="VIP-01">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">サイン：</td>
+                <td>
+<img id="imgSign" width="100" height="50" src="data:image/png;base64,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">
+<script type="text/javascript">
+// サイン設定
+draw(document.getElementById("imgSign").src);
+function draw(imgSignSrc) {
+  var img = new Image();
+  img.src = imgSignSrc;
+
+  img.onload = function () {
+    var canvas = document.getElementById("canvassample");
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+  };
+}
+</script>
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">郵便番号：</td>
+                <td colspan="2">
+                <input type="text" name="txt_PostNo" size=6 value="271-0056">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">住所：</td>
+                <td colspan="2">
+                <input type="text" name="txt_Address" size=50 value="沖縄県沖縄市〇〇２－２－１〇〇マンション４５４号">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+
+<table align="center" border="0" style="border-style:none;" width="50%">
+  <tbody><tr>
+    <td align="center">
+        <input type="button" name="registButton" value="登録" onclick="javascript:doRegist();" style="width:80px;height:24px;">
+    </td>
+    <td align="center">
+        <input type="button" name="returnButton" value="戻る" onclick="javascript:doReturn();" style="width:80px;height:24px;">
+    </td>
+  </tr>
+</tbody></table>
+<!-- Edit  end  -->
+        </td>
+    </tr>
+</tbody></table>
+</input_type="hidden"></form></body></html>

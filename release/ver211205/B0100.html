@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>B0100 タブレット情報一覧</title>
+<style type="text/css">
+<!--
+table {
+  font-size : 12px;
+}
+input.button {
+  color : white;
+  background-color : #790018;
+  font-size : 14px;
+  width : 105px;
+}
+.table_tr_title {
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+  background: #CCCCCC;
+  font-family: "ＭＳ 明朝",serif;
+  height: 30px;
+}
+.table_tr_single {
+  background: #FFFFFF;
+  font-family: "ＭＳ 明朝",serif;
+}
+.table_tr_double {
+  background: #DDDDDD;
+  font-family: "ＭＳ 明朝",serif;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+
+function doSearch() {
+   alert("25件検索できました。");
+}
+
+function doLineAdd() {
+    window.location.href = 'B0101.html?lineCnt=0';
+}
+
+function doLineDelete() {
+   if (confirm("選択した行を削除しますが、よろしいですか。")) {
+       alert("削除しました。");
+   }
+}
+
+function doLogout(){
+    if (confirm("ログアウトしますが、よろしいですか。")) {
+        var alink = document.createElement('a');
+        alink.href = "Login.html";    // サーバのファイルのURL
+        alink.click();              // クリック実行
+        return false;
+    }
+}
+
+function doLineShow(){
+    window.location.href = 'B0101.html?editFlag=false';
+}
+
+function doChkAll(){
+    var isChecked = document.getElementById('CHECKALL').checked;
+    if (isChecked == true) {
+        var checkboxs = document.getElementsByName('CHECK1');
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = true;
+        }
+    }
+    if (isChecked == false) {
+        var checkboxs = document.getElementsByName('CHECK1');
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = false;
+        }
+    }
+}
+
+function doLineEdit(){
+    window.location.href = 'B0101.html?lineCnt=3';
+}
+
+function doExcelExport() {
+    // a タグ生成
+    var alink = document.createElement('a');
+    alink.download = "タブレット情報一覧.xlsx";  // [download] のファイル名
+    alink.href = "./タブレット情報一覧.xlsx";    // サーバのファイルのURL
+    alink.click();              // クリック実行
+    alert("タブレット情報一覧.xlsxを出力した。");
+    return false;
+}
+
+-->
+</script>
+</head><body onload="" onresize="">
+<form name="repform" method="post" action="http://xxxx-new2nd.jp.testmd.internal.xxxx.com/xxxx.md/report/tanpin_bunseki/index.php">
+<input type="hidden" name="XBUTTON" value="">
+<input type="hidden" name="VIEWSTATE" value="viewstate_6067f9abc93ee8.58455042">
+<input_type="hidden" name="SELECTED_DATE" value="">
+
+<!-- エラーメッセージ格納場所 -->
+
+<div id="appErrorObjects" style="display:none"></div>
+<div id="popOnloadMessage" style="display:none">
+<textarea name="popOnloadMessageText" id="popOnloadMessageText" style="display : none;"></textarea>
+</div>
+
+
+<table width="980" style="border-style:none;">
+  <tbody>
+  <tr>
+    <td height="52" bordercolorlight="black" bordercolordark="black">
+      
+      <!-- このソースを直したら「header_print.html」「header_non_width.html」も修正してください -->
+ <div style="width:100%; height:52px;">
+   <div style="width:100%; height:25px; border-style:solid; border-width:2px; padding:4px; background:white;">
+     <table style="width:100%; height:36px; border:solid 1px black; background:white;" cellspacing="2px">
+       <tbody>
+         <tr>
+           <td class="NO_BORDER" style="width:10%; text-align:left; word-break:keep-all; padding:0px;">
+             <table style="color : white;" cellpadding="0" cellspacing="0">
+               <tbody>
+                 <tr>
+                   <td bgcolor="#7f0019" align="center" width="98" height="39" style="font-size:14px;">TTKR</td>
+                 </tr>
+               </tbody>
+             </table>
+           </td>
+           <td class="NO_BORDER" style="width:80%; text-align:center; word-break:keep-all; font-size:18px; font-weight:bold;">B0100 タブレット情報一覧<span style="color: #ff0000"></span></td>
+           <td class="NO_BORDER" style="width:10%; font-weight:bold;"></td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+ </div>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+  <tbody>
+    <tr>
+    <td align="left"><a href="TopMenu.html">TopMenu</a></d>
+    <td align="right"><a href="javascript:doLogout();">YUK47001</a></d>
+    </d>
+    </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+    <tbody><tr>
+        <td align="center">
+<fieldset class="rp_menu" align="center">
+    <table width="100%" align="center" style="border-style : none none none none; ">
+        <tbody>
+            <tr>
+                <td width="100px" align="right" nowrap="">元請企業：</td>
+                <td width="150px">
+                    <select id="SEL_COMPANY" name="SEL_COMPANY" onchange="javascript:changeCompany();">
+                        <option value="000">000:株式会社〇〇〇〇</option>
+                        <option value="BBB">BBB:株式会社BBBBB</option>
+                        <option value="YUK" selected>YUK:株式会社CCCCC</option>
+                        <option value="DDD">DDD:株式会社DDDDD</option>
+                    </select>
+                </td>
+                <td width="100px" align="right" nowrap="">タブレット：</td>
+                <td width="150px">
+                    <select id="SEL_TABLET" name="SEL_TABLET" onchange="javascript:changeCompany();">
+                        <option value="YUK-01">YUK-01</option>
+                        <option value="YUK-02">YUK-02</option>
+                        <option value="YUK-03" selected>YUK-03</option>
+                        <option value="YUK-04">YUK-04</option>
+                    </select>
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">端末識別番号：</td>
+                <td><input type="text" name="IMEI" id="IMEI" size=15 value="" maxlength="15">
+                </td>
+                <td align="right" nowrap="">MACアドレス：</td>
+                <td><input type="text" name="MacAddress" size=17 value="">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="検索" onclick="javascript:doSearch();" style="width:80px;height:24px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<!-- Edit start -->
+<fieldset class="rp_menu" align="center">
+    <table width="100%" align="left">
+    <tr><td>
+        <table width="100%" align="center">
+            <tr>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行追加" onclick="javascript:doLineAdd();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行削除" onclick="javascript:doLineDelete();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行参照" onclick="javascript:doLineShow();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行編集" onclick="javascript:doLineEdit();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="Excel出力" onclick="javascript:doExcelExport();" style="width:80px;height:24px;">
+                </td>
+            </tr>
+        </table>
+        <table width="100%" align="left" border="1" style="border-collapse: collapse">
+            <tr class="table_tr_title" >
+                <th width="20px"><input type="checkbox" id="CHECKALL" name="CHECKALL" tabindex="9" onchange="javascript:doChkAll();" ></th>
+                <th width="250px">元請企業</th>
+                <th width="150px">タブレット</th>
+                <th width="200px">端末識別番号</th>
+                <th>MACアドレス</th>
+            </tr>
+        </table>
+        <div style="height:300px; width:950px; overflow-y:scroll;">
+        <table width="100%" align="left" border="1" style="border-collapse: collapse">
+            <tr class="table_tr_single" >
+                <td width="20px" align="center" nowrap=""><input type="checkbox" id="CHECK101" name="CHECK1" tabindex="9"></td>
+                <td width="250px" align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td width="150px" align="left" nowrap="">YUK-01</td>
+                <td width="200px" align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-02</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-03</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-04</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-05</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-06</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-07</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-08</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-09</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-10</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-11</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-12</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-13</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-14</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-15</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-16</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-17</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-18</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-19</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-20</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-21</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-22</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-23</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-24</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK-25</td>
+                <td align="left" nowrap="">012345678901234</td>
+                <td align="left" nowrap="">00:00:5e:00:53:00</td>
+            </tr>
+        </table>
+        </div>
+    </td><tr>
+    </table>
+</fieldset>
+<!-- Edit  end  -->
+        </td>
+    </tr>
+</tbody></table>
+</input_type="hidden"></form></body></html>

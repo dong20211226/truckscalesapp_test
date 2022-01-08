@@ -1,0 +1,477 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<title>A0200 鉄筋搬入情報一覧</title>
+<style type="text/css">
+<!--
+table {
+  font-size : 12px;
+}
+input.button {
+  color : white;
+  background-color : #790018;
+  font-size : 14px;
+  width : 105px;
+}
+.table_tr_title {
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: center;
+  background: #CCCCCC;
+  font-family: "ＭＳ 明朝",serif;
+  height: 30px;
+}
+.table_tr_single {
+  background: #FFFFFF;
+  font-family: "ＭＳ 明朝",serif;
+}
+.table_tr_double {
+  background: #DDDDDD;
+  font-family: "ＭＳ 明朝",serif;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+
+'use strcit';
+document.getElementById('SEL_CARGO').addEventListener('input', function handleInput (event) {
+  console.log(event.target.value);
+}, false);
+
+function doSearch() {//alert(document.getElementById('SEL_CARGO').value);
+   alert("25件検索できました。");
+}
+
+function doLineAdd() {
+    window.location.href = 'A0201.html?lineCnt=0';
+}
+
+function doLineDelete() {
+   if (confirm("選択した行を削除しますが、よろしいですか。")) {
+       alert("削除しました。");
+   }
+}
+
+function doLogout(){
+    if (confirm("ログアウトしますが、よろしいですか。")) {
+        var alink = document.createElement('a');
+        alink.href = "Login.html";    // サーバのファイルのURL
+        alink.click();              // クリック実行
+        return false;
+    }
+}
+
+function doLineShow(){
+    window.location.href = 'A0201.html?editFlag=false';
+}
+
+function doChkAll(){
+    var isChecked = document.getElementById('CHECKALL').checked;
+    if (isChecked == true) {
+        var checkboxs = document.getElementsByName('CHECK1');
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = true;
+        }
+    }
+    if (isChecked == false) {
+        var checkboxs = document.getElementsByName('CHECK1');
+        for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = false;
+        }
+    }
+}
+
+function doLineEdit(){
+    window.location.href = 'A0201.html?lineCnt=3';
+}
+
+function doExcelExport() {
+    // a タグ生成
+    var alink = document.createElement('a');
+    alink.download = "鉄筋搬入情報一覧.xlsx";  // [download] のファイル名
+    alink.href = "./鉄筋搬入情報一覧.xlsx";    // サーバのファイルのURL
+    alink.click();              // クリック実行
+    alert("鉄筋搬入情報一覧.xlsxを出力した。");
+    return false;
+}
+
+-->
+</script>
+</head><body onload="" onresize="">
+<form name="repform" method="post" action="http://xxxx-new2nd.jp.testmd.internal.xxxx.com/xxxx.md/report/tanpin_bunseki/index.php">
+<input type="hidden" name="XBUTTON" value="">
+<input type="hidden" name="VIEWSTATE" value="viewstate_6067f9abc93ee8.58455042">
+<input_type="hidden" name="SELECTED_DATE" value="">
+
+<!-- エラーメッセージ格納場所 -->
+
+<div id="appErrorObjects" style="display:none"></div>
+<div id="popOnloadMessage" style="display:none">
+<textarea name="popOnloadMessageText" id="popOnloadMessageText" style="display : none;"></textarea>
+</div>
+
+
+<table width="980" style="border-style:none;">
+  <tbody>
+  <tr>
+    <td height="52" bordercolorlight="black" bordercolordark="black">
+      
+      <!-- このソースを直したら「header_print.html」「header_non_width.html」も修正してください -->
+ <div style="width:100%; height:52px;">
+   <div style="width:100%; height:25px; border-style:solid; border-width:2px; padding:4px; background:white;">
+     <table style="width:100%; height:36px; border:solid 1px black; background:white;" cellspacing="2px">
+       <tbody>
+         <tr>
+           <td class="NO_BORDER" style="width:10%; text-align:left; word-break:keep-all; padding:0px;">
+             <table style="color : white;" cellpadding="0" cellspacing="0">
+               <tbody>
+                 <tr>
+                   <td bgcolor="#7f0019" align="center" width="98" height="39" style="font-size:14px;">TTKR</td>
+                 </tr>
+               </tbody>
+             </table>
+           </td>
+           <td class="NO_BORDER" style="width:80%; text-align:center; word-break:keep-all; font-size:18px; font-weight:bold;">A0200 鉄筋搬入情報一覧<span style="color: #ff0000"></span></td>
+           <td class="NO_BORDER" style="width:10%; font-weight:bold;"></td>
+         </tr>
+       </tbody>
+     </table>
+   </div>
+ </div>
+
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+  <tbody>
+    <tr>
+    <td align="left"><a href="TopMenu.html">TopMenu</a></d>
+    <td align="right"><a href="javascript:doLogout();">YUK47001</a></d>
+    </d>
+    </tr>
+  </tbody>
+</table>
+
+<table width="980" style="border-style:none;">
+    <tbody><tr>
+        <td align="center">
+<fieldset class="rp_menu" align="center">
+    <table width="100%" align="center" style="border-style : none none none none; ">
+        <tbody>
+            <tr>
+                <td width="100px" align="right" nowrap="">元請企業：</td>
+                <td width="150px">
+                    <select id="SEL_COMPANY" name="SEL_COMPANY" onchange="javascript:changeCompany();">
+                        <option value="000">000:株式会社〇〇〇〇</option>
+                        <option value="BBB">BBB:株式会社BBBBB</option>
+                        <option value="YUK" selected>YUK:株式会社CCCCC</option>
+                        <option value="DDD">DDD:株式会社DDDDD</option>
+                    </select>
+                </td>
+                <td width="100px" align="right" nowrap="">現場：</td>
+                <td width="250px">
+                    <select id="SEL_COMPANY" name="SEL_COMPANY" onchange="javascript:changeCompany();" style="width:250px;">
+                        <option value="YUK47001">YUK47001:現場◇◆◇◆◇◆◇００１</option>
+                        <option value="YUK47002">YUK47002:現場◇◆◇◆◇◆◇００２</option>
+                        <option value="YUK47003" selected>YUK47003:現場◇◆◇◆◇◆◇００３</option>
+                        <option value="YUK47004">YUK47004:現場◇◆◇◆◇◆◇００４</option>
+                    </select>
+                </td>
+                <td width="100px" align="right" nowrap="">日付：</td>
+                <td><input type="text" name="txt_date_f" size=10 value="2021/10/01">～<input type="text" name="txt_date_t" size=10 value="2022/05/01">
+                </td>
+            </tr>
+            <tr>
+                <td align="right" nowrap="">時間：</td>
+                <td><input type="text" name="txt_time_f" size=5 value="08:34">～<input type="text" name="txt_time_t" size=5 value="14:34">
+                </td>
+                <td align="right" nowrap="">貨物：</td>
+                <td><input list="cagroList" id="SEL_CARGO" name="SEL_CARGO" size=11 />
+<datalist id="cagroList">
+  <option value="生コン">
+  <option value="鉄筋">
+  <option value="土">
+  <option value="砂利">
+</datalist>
+                </td>
+                <td align="center" colspan="2">
+                    <input type="button" name="downloadButton" value="検索" onclick="javascript:doSearch();" style="width:80px;height:24px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</fieldset>
+<!-- Edit start -->
+<fieldset class="rp_menu" align="center">
+    <table width="100%" align="left">
+    <tr><td>
+        <table width="100%" align="center">
+            <tr>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行追加" onclick="javascript:doLineAdd();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行削除" onclick="javascript:doLineDelete();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行参照" onclick="javascript:doLineShow();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="行編集" onclick="javascript:doLineEdit();" style="width:80px;height:24px;">
+                </td>
+                <td align="center">
+                    <input type="button" name="downloadButton" value="Excel出力" onclick="javascript:doExcelExport();" style="width:80px;height:24px;">
+                </td>
+            </tr>
+        </table>
+        <table width="100%" align="left" border="1" style="border-collapse: collapse">
+            <tr class="table_tr_title" >
+                <th width="20px"><input type="checkbox" id="CHECKALL" name="CHECKALL" tabindex="9" onchange="javascript:doChkAll();" ></th>
+                <th width="200px">元請企業</th>
+                <th width="250px">現場</th>
+                <th width="100px">日付</th>
+                <th width="100px">時間</th>
+                <th width="150px">貨物</th>
+                <th>重量</th>
+            </tr>
+        </table>
+        <div style="height:300px; width:950px; overflow-y:scroll;">
+        <table width="100%" align="left" border="1" style="border-collapse: collapse">
+            <tr class="table_tr_single" >
+                <td width="20px" align="center" nowrap=""><input type="checkbox" id="CHECK101" name="CHECK1" tabindex="9"></td>
+                <td width="200px" align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td width="250px" align="left" nowrap="">YUK47001:現場◇◆◇◆◇◆◇００１</td>
+                <td width="100px" align="left" nowrap="">2021/10/01</td>
+                <td width="100px" align="left" nowrap="">09:00</td>
+                <td width="150px" align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47002:現場◇◆◇◆◇◆◇００２</td>
+                <td align="left" nowrap="">2021/10/02</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">鉄筋</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47003:現場◇◆◇◆◇◆◇００３</td>
+                <td align="left" nowrap="">2021/10/03</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">鉄筋</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47004:現場◇◆◇◆◇◆◇００４</td>
+                <td align="left" nowrap="">2021/10/04</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">鉄筋</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47005:現場◇◆◇◆◇◆◇００５</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">土</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47006:現場◇◆◇◆◇◆◇００６</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">土</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47007:現場◇◆◇◆◇◆◇００７</td>
+                <td align="left" nowrap="">2021/10/02</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">土</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47008:現場◇◆◇◆◇◆◇００８</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">砂利</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47009:現場◇◆◇◆◇◆◇００９</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">砂利</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47010:現場◇◆◇◆◇◆◇０１０</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">砂利</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47011:現場◇◆◇◆◇◆◇０１１</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">砂利</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47012:現場◇◆◇◆◇◆◇０１２</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47013:現場◇◆◇◆◇◆◇０１３</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47014:現場◇◆◇◆◇◆◇０１４</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47015:現場◇◆◇◆◇◆◇０１５</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47016:現場◇◆◇◆◇◆◇０１６</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47017:現場◇◆◇◆◇◆◇０１７</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47018:現場◇◆◇◆◇◆◇０１８</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47019:現場◇◆◇◆◇◆◇０１９</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47020:現場◇◆◇◆◇◆◇０２０</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47021:現場◇◆◇◆◇◆◇０２１</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47022:現場◇◆◇◆◇◆◇０２２</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47023:現場◇◆◇◆◇◆◇０２３</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_double" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47024:現場◇◆◇◆◇◆◇０２４</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+            <tr class="table_tr_single" >
+                <td align="left" nowrap=""><input type="checkbox" id="CHECK102" name="CHECK1" tabindex="9"></td>
+                <td align="left" nowrap="">YUK:株式会社〇〇〇〇</td>
+                <td align="left" nowrap="">YUK47025:現場◇◆◇◆◇◆◇０２５</td>
+                <td align="left" nowrap="">2021/10/01</td>
+                <td align="left" nowrap="">09:00</td>
+                <td align="left" nowrap="">生コン</td>
+                <td align="left" nowrap="">34.5t</td>
+            </tr>
+        </table>
+        </div>
+    </td><tr>
+    </table>
+</fieldset>
+<!-- Edit  end  -->
+        </td>
+    </tr>
+</tbody></table>
+</input_type="hidden"></form></body></html>

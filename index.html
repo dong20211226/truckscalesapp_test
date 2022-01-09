@@ -14,16 +14,92 @@ input.button {
   font-size : 14px;
   width : 105px;
 }
+.list-group {
+  padding-left: 0;
+  margin-bottom: 0;
+}
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
 -->
 </style>
 <script type="text/javascript">
 <!--
 
-function goLogin(){
-    window.location.href = 'release/ver220109/Login.html';
+function doMenuLink(menuid){
+    if ("ver211205" == menuid) {
+        window.location.href = 'release/ver211205/Login.html';
+    } else if ("ver220109" == menuid) {
+        window.location.href = 'release/ver220109/Login.html';
+    } else {
+        alert("未実装の画面です。");
+    }
 }
 
 -->
 </script>
-</head><body onload="goLogin();" onresize="">
+</head><body onload="" onresize="">
+<form name="repform" method="post" action="http://xxxx-new2nd.jp.testmd.internal.xxxx.com/xxxx.md/report/tanpin_bunseki/index.php">
+<input type="hidden" name="XBUTTON" value="">
+<input type="hidden" name="VIEWSTATE" value="viewstate_6067f9abc93ee8.58455042">
+<input_type="hidden" name="SELECTED_DATE" value="">
+
+<!-- エラーメッセージ格納場所 -->
+
+<div id="appErrorObjects" style="display:none"></div>
+<div id="popOnloadMessage" style="display:none">
+<textarea name="popOnloadMessageText" id="popOnloadMessageText" style="display : none;"></textarea>
+</div>
+
+
+<!-- ヘッダーリンク -->
+<!-- このソースを直したら「header_link_fix_height.html」も修正してください -->
+<!--<table width="980" border="0" cellspacing="0" style="font-size : 16px;border-style : none;">
+  <tbody>
+    <tr>
+    
+    
+    </tr>
+  </tbody>
+  <input id="G_KENSYO_OR_HONBAN" type="hidden" value="">
+</table>-->
+
+
+
+
+
+
+
+<table width="980" style="border-style:none;">
+    <tbody><tr>
+        <td align="center">
+<!-- Edit start -->
+<!-- <fieldset class="rp_menu" align="center"> -->
+<table width="600" style="border-width:3px;" border="2" bgcolor="#FFFFDD">
+  <tbody><tr>
+    <td>
+
+        <div class="list-group">
+            <a href="javascript:doMenuLink('ver211205');" data-hutt-menu-id="ver211205" class="list-group-item ">β版001&nbsp;2021/12/05&nbsp;HTML静態画面、サイン欄はPCの利用可&nbsp;</a>
+            <a href="javascript:doMenuLink('ver220109');" data-hutt-menu-id="ver220109" class="list-group-item ">β版002&nbsp;2022/01/09&nbsp;HTML静態画面、サイン欄はスマホも利用可&nbsp;</a>
+        </div>
+
+
+    </td>
+  </tr>
+</tbody></table>
+
+<br><br>
+<!--/fieldset-->
+
+<!-- Edit  end  -->
+        </td>
+    </tr>
+</tbody></table>
+</input_type="hidden"></form>
 </body></html>
